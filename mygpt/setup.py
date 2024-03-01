@@ -2,7 +2,9 @@
 import os
 import argparse
 
-from huggingface_hub import hf_hub_download, snapshot_download
+from huggingface_hub import hf_hub_download, snapshot_download, login
+
+login(token="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")
 
 from transformers import AutoTokenizer
 
