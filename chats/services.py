@@ -10,7 +10,7 @@ from llama_index.indices.postprocessor import MetadataReplacementPostProcessor
 from llama_index.llms import ChatMessage, MessageRole
 
 
-from models import Completion, CompletionGen
+from .models import Completion, CompletionGen
 
 from components.embeddings.embedding_component import EmbeddingComponent
 from components.llm.llm_component import LLMComponent
