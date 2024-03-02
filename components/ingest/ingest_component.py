@@ -94,7 +94,7 @@ class BaseIngestComponentWithIndex(BaseIngestComponent, abc.ABC):
     def _save_index(self):
         self._index.storage_context.persist(persist_dir=LOCAL_DATA_FOLDER)
 
-    def delete(self, doc_id: str) -> None:
+    def delete(self, doc_id):
         with self._index_thread_lock:
             # Delete the document from the index
             self._index.delete_ref_doc(doc_id, delete_from_docstore=True)
@@ -156,7 +156,7 @@ class BatchIngestComponent(BaseIngestComponentWithIndex):
         count_workers,
         *args,
         **kwargs,
-    ) -> None:
+    ):
         super().__init__(storage_context, service_context, *args, **kwargs)
         # Make an efficient use of the CPU and GPU, the embedding
         # must be in the transformations
@@ -314,7 +314,7 @@ def get_ingestion_component(
     storage_context,
     service_context,
     settings,
-) -> BaseIngestComponent:
+):
     """Get the ingestion component for the given configuration."""
     ingest_mode = settings.embedding.ingest_mode
     if ingest_mode == "batch":

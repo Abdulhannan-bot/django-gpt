@@ -8,8 +8,7 @@ from llama_index.chat_engine.types import (
 )
 from llama_index.indices.postprocessor import MetadataReplacementPostProcessor
 from llama_index.llms import ChatMessage, MessageRole
-from llama_index.types import TokenGen
-from pydantic import BaseModel
+
 
 from models import Completion, CompletionGen
 
@@ -23,24 +22,15 @@ from open_ai.models import ContextFilter
 from chunks.models import Chunk
 
 
-class Completion(BaseModel):
-    response: str
-    sources: list[Chunk] | None = None
-
-
-class CompletionGen(BaseModel):
-    response: TokenGen
-    sources: list[Chunk] | None = None
-
 
 @dataclass
 class ChatEngineInput:
-    system_message: ChatMessage | None = None
-    last_message: ChatMessage | None = None
-    chat_history: list[ChatMessage] | None = None
+    system_message = None
+    last_message = None
+    chat_history = None
 
     @classmethod
-    def from_messages(cls, messages: list[ChatMessage]) -> "ChatEngineInput":
+    def from_messages(cls, messages):
         # Detect if there is a system message, extract the last message and chat history
         system_message = (
             messages[0]
@@ -72,11 +62,11 @@ class ChatService:
     @inject
     def __init__(
         self,
-        llm_component: LLMComponent,
-        vector_store_component: VectorStoreComponent,
-        embedding_component: EmbeddingComponent,
-        node_store_component: NodeStoreComponent,
-    ) -> None:
+        llm_component,
+        vector_store_component,
+        embedding_component,
+        node_store_component,
+    ):
         self.llm_service = llm_component
         self.vector_store_component = vector_store_component
         self.storage_context = StorageContext.from_defaults(
@@ -96,10 +86,10 @@ class ChatService:
 
     def _chat_engine(
         self,
-        system_prompt: str | None = None,
-        use_context: bool = False,
-        context_filter: ContextFilter | None = None,
-    ) -> BaseChatEngine:
+        system_prompt = None,
+        use_context = False,
+        context_filter = None,
+    ):
         if use_context:
             vector_index_retriever = self.vector_store_component.get_retriever(
                 index=self.index, context_filter=context_filter
@@ -120,10 +110,10 @@ class ChatService:
 
     def stream_chat(
         self,
-        messages: list[ChatMessage],
-        use_context: bool = False,
-        context_filter: ContextFilter | None = None,
-    ) -> CompletionGen:
+        messages,
+        use_context= False,
+        context_filter = None,
+    ):
         chat_engine_input = ChatEngineInput.from_messages(messages)
         last_message = (
             chat_engine_input.last_message.content
@@ -156,10 +146,10 @@ class ChatService:
 
     def chat(
         self,
-        messages: list[ChatMessage],
-        use_context: bool = False,
-        context_filter: ContextFilter | None = None,
-    ) -> Completion:
+        messages,
+        use_context = False,
+        context_filter = None,
+    ):
         chat_engine_input = ChatEngineInput.from_messages(messages)
         last_message = (
             chat_engine_input.last_message.content

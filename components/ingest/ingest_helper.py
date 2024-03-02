@@ -3,7 +3,7 @@ from pathlib import Path
 
 from llama_index import Document
 from llama_index.readers import JSONReader, StringIterableReader
-from llama_index.core.readers.file.base import DEFAULT_FILE_READER_CLS
+from llama_index.readers.file.base import DEFAULT_FILE_READER_CLS
 
 logger = logging.getLogger(__name__)
 
@@ -25,8 +25,8 @@ class IngestionHelper:
 
     @staticmethod
     def transform_file_into_documents(
-        file_name: str, file_data: Path
-    ) -> list[Document]:
+        file_name, file_data
+    ):
         documents = IngestionHelper._load_file_to_documents(file_name, file_data)
         for document in documents:
             document.metadata["file_name"] = file_name
@@ -34,7 +34,7 @@ class IngestionHelper:
         return documents
 
     @staticmethod
-    def _load_file_to_documents(file_name: str, file_data: Path) -> list[Document]:
+    def _load_file_to_documents(file_name, file_data):
         logger.debug("Transforming file_name=%s into documents", file_name)
         extension = Path(file_name).suffix
         reader_cls = FILE_READER_CLS.get(extension)
@@ -51,7 +51,7 @@ class IngestionHelper:
         return reader_cls().load_data(file_data)
 
     @staticmethod
-    def _exclude_metadata(documents: list[Document]) -> None:
+    def _exclude_metadata(documents):
         logger.debug("Excluding metadata from count=%s documents", len(documents))
         for document in documents:
             document.metadata["doc_id"] = document.doc_id
