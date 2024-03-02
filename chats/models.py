@@ -25,16 +25,16 @@ class TokenGenField(models.TextField):
 
 class Completion(models.Model):
     response = models.CharField(max_length=255, null = True, blank = True)
-    sources = models.ManyToManyField(Chunk, null=True)
+    sources = models.ManyToManyField(Chunk)
 
 class CompletionGen(models.Model):
     response = TokenGenField()
-    sources = models.ManyToManyField(Chunk, null=True)
+    sources = models.ManyToManyField(Chunk)
 
 class ChatBody(models.Model):
     """Model representing chat body."""
     
-    messages = models.ManyToManyField(OpenAIMessage, null=True)
+    messages = models.ManyToManyField(OpenAIMessage)
     use_context = models.BooleanField(default=False)
     context_filter = models.ForeignKey(ContextFilter, null=True, on_delete=models.SET_NULL)
     include_sources = models.BooleanField(default=True)

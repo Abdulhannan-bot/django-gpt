@@ -8,7 +8,10 @@ from llama_index.vector_stores.types import VectorStore
 
 from components.vector_store.batched_chroma import BatchedChromaVectorStore
 from open_ai.models import ContextFilter
-from mygpt.settings import LOCAL_DATA_FOLDER
+from mygpt.settings import (
+    LOCAL_DATA_FOLDER,
+    VECTOR_STORE_DATABASE
+)
 from components.models import Settings
 
 # from private_gpt.settings.settings import Settings
@@ -40,22 +43,23 @@ class VectorStoreComponent:
     vector_store: VectorStore
 
     @inject
-    def __init__(self, settings: Settings) -> None:
-        match settings.vectorstore.database:
+    def __init__(self) -> None:
+        vector_store_database = VECTOR_STORE_DATABASE
+        match vector_store_database:
             case "pgvector":
                 from llama_index.vector_stores import PGVectorStore
 
-                if settings.pgvector is None:
-                    raise ValueError(
-                        "PGVectorStore settings not found. Please provide settings."
-                    )
+                # if settings.pgvector is None:
+                #     raise ValueError(
+                #         "PGVectorStore settings not found. Please provide settings."
+                #     )
 
-                self.vector_store = typing.cast(
-                    VectorStore,
-                    PGVectorStore.from_params(
-                        **settings.pgvector.model_dump(exclude_none=True)
-                    ),
-                )
+                # self.vector_store = typing.cast(
+                #     VectorStore,
+                #     PGVectorStore.from_params(
+                #         **settings.pgvector.model_dump(exclude_none=True)
+                #     ),
+                # )
 
             case "chroma":
                 try:
@@ -90,28 +94,28 @@ class VectorStoreComponent:
                 from llama_index.vector_stores.qdrant import QdrantVectorStore
                 from qdrant_client import QdrantClient
 
-                if settings.qdrant is None:
-                    logger.info(
-                        "Qdrant config not found. Using default settings."
-                        "Trying to connect to Qdrant at localhost:6333."
-                    )
-                    client = QdrantClient()
-                else:
-                    client = QdrantClient(
-                        **settings.qdrant.model_dump(exclude_none=True)
-                    )
-                self.vector_store = typing.cast(
-                    VectorStore,
-                    QdrantVectorStore(
-                        client=client,
-                        collection_name="make_this_parameterizable_per_api_call",
-                    ),  # TODO
-                )
+                # if settings.qdrant is None:
+                #     logger.info(
+                #         "Qdrant config not found. Using default settings."
+                #         "Trying to connect to Qdrant at localhost:6333."
+                #     )
+                #     client = QdrantClient()
+                # else:
+                #     client = QdrantClient(
+                #         **settings.qdrant.model_dump(exclude_none=True)
+                #     )
+                # self.vector_store = typing.cast(
+                #     VectorStore,
+                #     QdrantVectorStore(
+                #         client=client,
+                #         collection_name="make_this_parameterizable_per_api_call",
+                #     ),  # TODO
+                # )
             case _:
                 # Should be unreachable
                 # The settings validator should have caught this
                 raise ValueError(
-                    f"Vectorstore database {settings.vectorstore.database} not supported"
+                    f"Vectorstore database {VECTOR_STORE_DATABASE} not supported"
                 )
 
     @staticmethod
