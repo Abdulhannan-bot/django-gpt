@@ -19,6 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv()
 
 MODELS_PATH = BASE_DIR/"models"
+LOCAL_DATA_FOLDER = BASE_DIR/"local_data/private_gpt"
 MODELS_CACHE_PATH = MODELS_PATH/"cache"
 
 
@@ -51,7 +52,21 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'components',
+    'open_ai',
+    'api',
+    'chats',
+    'chunks',
+    'ingests',
+    'embeddings',
+    'rest_framework',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

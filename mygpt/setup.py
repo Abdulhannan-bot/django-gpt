@@ -17,14 +17,6 @@ from settings import (
     LLM_TOKENIZER
 )
 
-print(
-    MODELS_PATH,
-    MODELS_CACHE_PATH,
-    LLM_HF_MODEL_NAME,
-    LLM_HF_MODEL_FILE,
-    EMBEDDINGS_HF_MODEL_NAME,
-    LLM_TOKENIZER
-)
 
 resume_download = True
 if __name__ == '__main__':
