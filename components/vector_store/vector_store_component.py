@@ -9,6 +9,7 @@ from llama_index.vector_stores.types import VectorStore
 from components.vector_store.batched_chroma import BatchedChromaVectorStore
 from open_ai.models import ContextFilter
 from mygpt.settings import LOCAL_DATA_FOLDER
+from components.models import Settings
 
 # from private_gpt.settings.settings import Settings
 
@@ -17,8 +18,8 @@ logger = logging.getLogger(__name__)
 
 @typing.no_type_check
 def _chromadb_doc_id_metadata_filter(
-    context_filter,
-):
+    context_filter: ContextFilter | None,
+) -> dict | None:
     if context_filter is None or context_filter.docs_ids is None:
         return {}  # No filter
     elif len(context_filter.docs_ids) < 1:
@@ -39,7 +40,7 @@ class VectorStoreComponent:
     vector_store: VectorStore
 
     @inject
-    def __init__(self, settings):
+    def __init__(self, settings: Settings) -> None:
         match settings.vectorstore.database:
             case "pgvector":
                 from llama_index.vector_stores import PGVectorStore
@@ -115,10 +116,10 @@ class VectorStoreComponent:
 
     @staticmethod
     def get_retriever(
-        index,
-        context_filter,
-        similarity_top_k = 2,
-    ):
+        index: VectorStoreIndex,
+        context_filter: ContextFilter | None = None,
+        similarity_top_k: int = 2,
+    ) -> VectorIndexRetriever:
         # This way we support qdrant (using doc_ids) and chroma (using where clause)
         return VectorIndexRetriever(
             index=index,
@@ -129,6 +130,6 @@ class VectorStoreComponent:
             },
         )
 
-    def close(self):
+    def close(self) -> None:
         if hasattr(self.vector_store.client, "close"):
             self.vector_store.client.close()

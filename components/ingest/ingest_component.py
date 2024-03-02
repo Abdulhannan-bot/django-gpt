@@ -22,7 +22,7 @@ from llama_index.ingestion import run_transformations
 from components.ingest.ingest_helper import IngestionHelper
 # from private_gpt.paths import local_data_path
 from mygpt.settings import LOCAL_DATA_FOLDER
-from private_gpt.settings.settings import Settings
+from components.models import Settings
 
 logger = logging.getLogger(__name__)
 

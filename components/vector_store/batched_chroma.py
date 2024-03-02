@@ -22,17 +22,17 @@ class BatchedChromaVectorStore(ChromaVectorStore):
 
     """
 
-    chroma_client = None
+    chroma_client: Any | None
 
     def __init__(
         self,
-        chroma_client,
-        chroma_collection,
-        host,
-        port,
-        ssl,
-        headers,
-        collection_kwargs,
+        chroma_client: Any,
+        chroma_collection: Any,
+        host: str | None = None,
+        port: str | None = None,
+        ssl: bool = False,
+        headers: dict[str, str] | None = None,
+        collection_kwargs: dict[Any, Any] | None = None,
     ) -> None:
         super().__init__(
             chroma_collection=chroma_collection,
@@ -44,7 +44,7 @@ class BatchedChromaVectorStore(ChromaVectorStore):
         )
         self.chroma_client = chroma_client
 
-    def add(self, nodes, **add_kwargs):
+    def add(self, nodes: list[BaseNode], **add_kwargs: Any) -> list[str]:
         """Add nodes to index, batching the insertion to avoid issues.
 
         Args:
