@@ -29,7 +29,7 @@ class Completion(models.Model):
 
 class CompletionGen(models.Model):
     response = TokenGenField()
-    sources = models.ManyToManyField(Chunk, null=True, on_delete=models.CASCADE)
+    sources = models.ManyToManyField(Chunk, null=True)
 
 class ChatBody(models.Model):
     """Model representing chat body."""
