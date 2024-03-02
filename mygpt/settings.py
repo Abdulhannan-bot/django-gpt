@@ -28,6 +28,10 @@ LLM_HF_MODEL_FILE = os.getenv("LLM_HF_MODEL_FILE")
 EMBEDDINGS_HF_MODEL_NAME = os.getenv("EMBEDDINGS_HF_MODEL_NAME")
 LLM_TOKENIZER = os.getenv("LLM_TOKENIZER")
 SERVER = os.getenv("SERVER")
+LLM_MODE = os.getenv("LLM_MODE")
+PROMPT_STYLE = os.getenv("PROMPT_STYLE") 
+MAX_NEW_TOKENS = os.getenv("MAX_NEW_TOKENS")
+CONTEXT_WINDOW = os.getenv("CONTEXT_WINDOW")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/

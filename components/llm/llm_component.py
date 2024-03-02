@@ -10,7 +10,13 @@ from components.llm.prompt_helper import get_prompt_style
 # from private_gpt.paths import models_cache_path, models_path
 from mygpt.settings import (
     MODELS_CACHE_PATH,
-    MODELS_PATH
+    MODELS_PATH,
+    LLM_TOKENIZER,
+    LLM_MODE,
+    PROMPT_STYLE,
+    LLM_HF_MODEL_FILE,
+    MAX_NEW_TOKENS,
+    CONTEXT_WINDOW
 )
 # from private_gpt.settings.settings import Settings
 
@@ -22,29 +28,29 @@ class LLMComponent:
     llm = None
 
     @inject
-    def __init__(self, settings):
-        llm_mode = settings.llm.mode
-        if settings.llm.tokenizer:
+    def __init__(self):
+        llm_mode = LLM_MODE
+        if LLM_TOKENIZER:
             set_global_tokenizer(
                 AutoTokenizer.from_pretrained(
-                    pretrained_model_name_or_path=settings.llm.tokenizer,
+                    pretrained_model_name_or_path=LLM_TOKENIZER,
                     cache_dir=str(MODELS_CACHE_PATH),
                 )
             )
 
         logger.info("Initializing the LLM in mode=%s", llm_mode)
         
-        match settings.llm.mode:
+        match llm_mode:
             case "local":
                 from llama_index.llms import LlamaCPP
                 print(MODELS_PATH)
-                prompt_style = get_prompt_style(settings.local.prompt_style)
+                prompt_style = get_prompt_style(PROMPT_STYLE)
 
                 self.llm = LlamaCPP(
-                    model_path=str(MODELS_PATH/settings.local.llm_hf_model_file),
+                    model_path=str(MODELS_PATH/LLM_HF_MODEL_FILE),
                     temperature=0.1,
-                    max_new_tokens=settings.llm.max_new_tokens,
-                    context_window=settings.llm.context_window,
+                    max_new_tokens=MAX_NEW_TOKENS,
+                    context_window=CONTEXT_WINDOW,
                     generate_kwargs={},
                     # All to GPU
                     model_kwargs={"n_gpu_layers": -1, "offload_kqv": True},
