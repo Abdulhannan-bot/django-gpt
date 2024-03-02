@@ -47,7 +47,7 @@ class LLMComponent:
                 prompt_style = get_prompt_style(PROMPT_STYLE)
 
                 self.llm = LlamaCPP(
-                    model_path=str(MODELS_PATH/LLM_HF_MODEL_FILE),
+                    model_path=str(MODELS_PATH / LLM_HF_MODEL_FILE),
                     temperature=0.1,
                     max_new_tokens=MAX_NEW_TOKENS,
                     context_window=CONTEXT_WINDOW,
@@ -58,6 +58,8 @@ class LLMComponent:
                     messages_to_prompt=prompt_style.messages_to_prompt,
                     completion_to_prompt=prompt_style.completion_to_prompt,
                     verbose=True,
+                    n_ctx = int(512),
+                    n_batch = int(512),
                 )
 
             case "sagemaker":
