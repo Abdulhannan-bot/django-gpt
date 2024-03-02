@@ -32,6 +32,7 @@ LLM_MODE = os.getenv("LLM_MODE")
 PROMPT_STYLE = os.getenv("PROMPT_STYLE") 
 MAX_NEW_TOKENS = os.getenv("MAX_NEW_TOKENS")
 CONTEXT_WINDOW = os.getenv("CONTEXT_WINDOW")
+VECTOR_STORE_DATABASE = os.getenv("VECTOR_STORE_DATABASE")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
