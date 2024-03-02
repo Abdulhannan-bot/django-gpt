@@ -6,7 +6,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 
-from .models import ChatBody, OpenAICompletion, OpenAIMessage
+from .models import ChatBody
+from open_ai.models import OpenAICompletion, OpenAIMessage
 from .services import ChatService
 
 @api_view(['POST'])
