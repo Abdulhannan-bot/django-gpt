@@ -54,7 +54,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'components',
     'open_ai',
-    'api',
+    # 'api',
     'chats',
     'chunks',
     'ingests',
