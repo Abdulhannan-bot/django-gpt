@@ -34,7 +34,7 @@ class CompletionGen(models.Model):
 class ChatBody(models.Model):
     """Model representing chat body."""
     
-    messages = models.ManyToManyField(OpenAIMessage, on_delete=models.CASCADE)
+    messages = models.ManyToManyField(OpenAIMessage, null=True)
     use_context = models.BooleanField(default=False)
     context_filter = models.ForeignKey(ContextFilter, null=True, on_delete=models.SET_NULL)
     include_sources = models.BooleanField(default=True)
