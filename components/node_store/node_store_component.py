@@ -12,11 +12,11 @@ logger = logging.getLogger(__name__)
 
 @singleton
 class NodeStoreComponent:
-    index_store = None
-    doc_store = None
+    index_store: BaseIndexStore
+    doc_store: BaseDocumentStore
 
     @inject
-    def __init__(self):
+    def __init__(self) -> None:
         try:
             self.index_store = SimpleIndexStore.from_persist_dir(
                 persist_dir=str(LOCAL_DATA_FOLDER)

@@ -23,6 +23,7 @@ from chunks.models import Chunk
 
 
 
+
 @dataclass
 class ChatEngineInput:
     system_message = None
@@ -62,11 +63,11 @@ class ChatService:
     @inject
     def __init__(
         self,
-        llm_component,
-        vector_store_component,
-        embedding_component,
-        node_store_component,
-    ):
+        llm_component: LLMComponent,
+        vector_store_component: VectorStoreComponent,
+        embedding_component: EmbeddingComponent,
+        node_store_component: NodeStoreComponent,
+    ) -> None:
         self.llm_service = llm_component
         self.vector_store_component = vector_store_component
         self.storage_context = StorageContext.from_defaults(
@@ -86,10 +87,10 @@ class ChatService:
 
     def _chat_engine(
         self,
-        system_prompt = None,
-        use_context = False,
-        context_filter = None,
-    ):
+        system_prompt: str | None = None,
+        use_context: bool = False,
+        context_filter: ContextFilter | None = None,
+    ) -> BaseChatEngine:
         if use_context:
             vector_index_retriever = self.vector_store_component.get_retriever(
                 index=self.index, context_filter=context_filter
@@ -110,10 +111,10 @@ class ChatService:
 
     def stream_chat(
         self,
-        messages,
-        use_context= False,
-        context_filter = None,
-    ):
+        messages: list[ChatMessage],
+        use_context: bool = False,
+        context_filter: ContextFilter | None = None,
+    ) -> CompletionGen:
         chat_engine_input = ChatEngineInput.from_messages(messages)
         last_message = (
             chat_engine_input.last_message.content
@@ -146,10 +147,10 @@ class ChatService:
 
     def chat(
         self,
-        messages,
-        use_context = False,
-        context_filter = None,
-    ):
+        messages: list[ChatMessage],
+        use_context: bool = False,
+        context_filter: ContextFilter | None = None,
+    ) -> Completion:
         chat_engine_input = ChatEngineInput.from_messages(messages)
         last_message = (
             chat_engine_input.last_message.content

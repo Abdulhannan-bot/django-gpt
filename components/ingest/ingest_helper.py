@@ -16,6 +16,7 @@ FILE_READER_CLS.update(
 )
 
 
+
 class IngestionHelper:
     """Helper class to transform a file into a list of documents.
 
@@ -25,8 +26,8 @@ class IngestionHelper:
 
     @staticmethod
     def transform_file_into_documents(
-        file_name, file_data
-    ):
+        file_name: str, file_data: Path
+    ) -> list[Document]:
         documents = IngestionHelper._load_file_to_documents(file_name, file_data)
         for document in documents:
             document.metadata["file_name"] = file_name
@@ -34,7 +35,7 @@ class IngestionHelper:
         return documents
 
     @staticmethod
-    def _load_file_to_documents(file_name, file_data):
+    def _load_file_to_documents(file_name: str, file_data: Path) -> list[Document]:
         logger.debug("Transforming file_name=%s into documents", file_name)
         extension = Path(file_name).suffix
         reader_cls = FILE_READER_CLS.get(extension)
@@ -51,7 +52,7 @@ class IngestionHelper:
         return reader_cls().load_data(file_data)
 
     @staticmethod
-    def _exclude_metadata(documents):
+    def _exclude_metadata(documents: list[Document]) -> None:
         logger.debug("Excluding metadata from count=%s documents", len(documents))
         for document in documents:
             document.metadata["doc_id"] = document.doc_id
