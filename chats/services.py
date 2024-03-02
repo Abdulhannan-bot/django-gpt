@@ -63,10 +63,10 @@ class ChatService:
     @inject
     def __init__(
         self,
-        llm_component: LLMComponent,
-        vector_store_component: VectorStoreComponent,
-        embedding_component: EmbeddingComponent,
-        node_store_component: NodeStoreComponent,
+        llm_component: LLMComponent = LLMComponent(),
+        vector_store_component: VectorStoreComponent = VectorStoreComponent(),
+        embedding_component: EmbeddingComponent = EmbeddingComponent(),
+        node_store_component: NodeStoreComponent = NodeStoreComponent(),
     ) -> None:
         self.llm_service = llm_component
         self.vector_store_component = vector_store_component
