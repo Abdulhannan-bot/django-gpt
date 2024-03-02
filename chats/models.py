@@ -25,7 +25,7 @@ class TokenGenField(models.TextField):
 
 class Completion(models.Model):
     response = models.CharField(max_length=255, null = True, blank = True)
-    sources = models.ManyToManyField(Chunk, null=True, on_delete=models.CASCADE)
+    sources = models.ManyToManyField(Chunk, null=True)
 
 class CompletionGen(models.Model):
     response = TokenGenField()
