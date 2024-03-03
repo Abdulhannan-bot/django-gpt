@@ -116,6 +116,7 @@ class ChatService:
         use_context: bool = False,
         context_filter: ContextFilter | None = None,
     ) -> CompletionGen:
+        print(messages)
         chat_engine_input = ChatEngineInput.from_messages(messages)
         last_message = (
             chat_engine_input.last_message.content
