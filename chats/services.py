@@ -39,8 +39,9 @@ class ChatEngineInput:
             else None
         )
         last_message = (
-            messages[-1]
-            if len(messages) > 0 and messages[-1].role == MessageRole.USER
+            # messages[-1]
+            messages.last()
+            if len(messages) > 0 and messages.last().role == MessageRole.USER
             else None
         )
         # Remove from messages list the system message and last message,
