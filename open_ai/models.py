@@ -16,10 +16,15 @@ class ContextFilter(BaseModel):
 #     doc_id = models.CharField(max_length=255, null=True, blank=True)
 
 
-class OpenAIDelta(models.Model):
+# class OpenAIDelta(models.Model):
+#     """A piece of completion that needs to be concatenated to get the full message."""
+
+#     content = models.TextField(blank=True, null=True)
+    
+class OpenAIDelta(BaseModel):
     """A piece of completion that needs to be concatenated to get the full message."""
 
-    content = models.TextField(blank=True, null=True)
+    content: str | None
 
 # class OpenAIMessage(models.Model):
 #     """Inference result, with the source of the message.
