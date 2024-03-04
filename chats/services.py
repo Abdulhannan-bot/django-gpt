@@ -26,22 +26,22 @@ from chunks.models import Chunk
 
 @dataclass
 class ChatEngineInput:
-    system_message = None
-    last_message = None
-    chat_history = None
+    system_message: ChatMessage | None = None
+    last_message: ChatMessage | None = None
+    chat_history: list[ChatMessage] | None = None
 
     @classmethod
     def from_messages(cls, messages):
         # Detect if there is a system message, extract the last message and chat history
+        
         system_message = (
             messages[0]
             if len(messages) > 0 and messages[0].role == MessageRole.SYSTEM
             else None
         )
         last_message = (
-            # messages[-1]
-            messages.last()
-            if len(messages) > 0 and messages.last().role == MessageRole.USER
+            messages[-1]
+            if len(messages) > 0 and messages[-1].role == MessageRole.USER
             else None
         )
         # Remove from messages list the system message and last message,
@@ -178,5 +178,6 @@ class ChatService:
             chat_history=chat_history,
         )
         sources = [Chunk.from_node(node) for node in wrapped_response.source_nodes]
+        
         completion = Completion(response=wrapped_response.response, sources=sources)
         return completion

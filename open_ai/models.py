@@ -3,9 +3,16 @@ import time
 import uuid
 from llama_index.llms import ChatResponse, CompletionResponse
 # Create your models here.
+from pydantic import BaseModel, Field
+from typing import Literal
 
-class ContextFilter(models.Model):
-    doc_id = models.CharField(max_length=255, null=True, blank=True)
+class ContextFilter(BaseModel):
+    docs_ids: list[str] | None = Field(
+        examples=[["c202d5e6-7b69-4869-81cc-dd574ee8ee11"]]
+    )
+
+# class ContextFilter(models.Model):
+#     doc_id = models.CharField(max_length=255, null=True, blank=True)
 
 
 class OpenAIDelta(models.Model):
@@ -13,25 +20,35 @@ class OpenAIDelta(models.Model):
 
     content = models.TextField(blank=True, null=True)
 
-class OpenAIMessage(models.Model):
+# class OpenAIMessage(models.Model):
+#     """Inference result, with the source of the message.
+
+#     Role could be the assistant or system
+#     (providing a default response, not AI generated).
+#     """
+
+#     ASSISTANT = 'assistant'
+#     SYSTEM = 'system'
+#     USER = 'user'
+    
+#     ROLE_CHOICES = [
+#         (ASSISTANT, 'Assistant'),
+#         (SYSTEM, 'System'),
+#         (USER, 'User')
+#     ]
+    
+#     role = models.CharField(max_length=100, choices=ROLE_CHOICES, default=USER)
+#     content = models.TextField(blank=True, null=True)
+    
+class OpenAIMessage(BaseModel):
     """Inference result, with the source of the message.
 
     Role could be the assistant or system
     (providing a default response, not AI generated).
     """
 
-    ASSISTANT = 'assistant'
-    SYSTEM = 'system'
-    USER = 'user'
-    
-    ROLE_CHOICES = [
-        (ASSISTANT, 'Assistant'),
-        (SYSTEM, 'System'),
-        (USER, 'User')
-    ]
-    
-    role = models.CharField(max_length=100, choices=ROLE_CHOICES, default=USER)
-    content = models.TextField(blank=True, null=True)
+    role: Literal["assistant", "system", "user"] = Field(default="user")
+    content: str | None
 
 class OpenAIChoice(models.Model):
     """Response from AI.
